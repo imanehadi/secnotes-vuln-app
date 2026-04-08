@@ -13,18 +13,12 @@ default:
 variables:
   GIT_STRATEGY: clone
   CI_REPOSITORY_URL: https://oauth2:${GITHUB_TOKEN}@github.com/imanehadi/secnotes-vuln-app.git
-  # Ajout des variables manquantes
   APP_NAME: "secnotes"
   IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
   SONAR_HOST_URL: "http://172.17.0.1:9000"
 
-cache:
-  paths:
-    - node_modules/
-    - .sonar/cache/
-
 # ============================================
-# ÉTAPE 1: Installation
+# ÉTAPE 1: Installation des dépendances
 # ============================================
 install_dependencies:
   stage: install
@@ -37,7 +31,7 @@ install_dependencies:
     expire_in: 1 day
 
 # ============================================
-# ÉTAPE 2: Tests
+# ÉTAPE 2: Tests unitaires
 # ============================================
 run_tests:
   stage: test
@@ -94,7 +88,7 @@ docker_build:
     paths:
       - image.tar
     expire_in: 1 hour
-  allow_failure: true  # Temporaire si Docker pose problème
+  allow_failure: true
 
 # ============================================
 # ÉTAPE 5: Déploiement Kubernetes local
@@ -106,16 +100,10 @@ deploy_k8s_local:
   script:
     - echo "[deploy] Déploiement local sur Kubernetes..."
     - kubectl create namespace dev --dry-run=client -o yaml | kubectl apply -f -
-    # Commenté temporairement si les fichiers n'existent pas
-    # - kubectl apply -f k8s/namespace.yaml || echo "Namespace ok"
-    # - kubectl apply -f k8s/configmap.yaml || echo "ConfigMap ok"
-    # - kubectl apply -f k8s/secret.yaml || echo "Secret ok"
-    # - kubectl apply -f k8s/deployment.yaml
-    # - kubectl apply -f k8s/service.yaml
-    # - kubectl rollout status deployment/$APP_NAME -n dev --timeout=5m || true
+    - echo "Namespace dev créé"
     - kubectl get pods -n dev
     - kubectl get svc -n dev
-  allow_failure: true  # Temporaire
+  allow_failure: true
 
 # ============================================
 # ÉTAPE 6: Terraform AWS
