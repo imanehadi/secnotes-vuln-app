@@ -8,7 +8,7 @@ stages:
 
 default:
   tags:
-    - secnotes-local
+    
 
 variables:
   GIT_STRATEGY: clone
