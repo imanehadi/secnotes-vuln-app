@@ -11,10 +11,8 @@ default:
     - secnotes-local
 
 variables:
-  APP_NAME: "secnotes"
-  IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
-  SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"
-  SONAR_HOST_URL: "http://172.17.0.1:9000"  # À ajouter ici ou dans GitLab Variables
+  GIT_STRATEGY: clone
+  CI_REPOSITORY_URL: https://oauth2:${GITHUB_TOKEN}@github.com/imanehadi/secnotes-vuln-app.git
 
 cache:
   paths:
