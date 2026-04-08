@@ -10,6 +10,13 @@ default:
   tags:
     - secnotes-local
 
+test-runner:
+  stage: test
+  script:
+    - echo "✅ Le runner fonctionne correctement!"
+    - node --version
+    - npm --version   
+
 variables:
   APP_NAME: "secnotes"
   IMAGE_TAG: "$CI_COMMIT_SHORT_SHA"
